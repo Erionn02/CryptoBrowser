@@ -1,17 +1,34 @@
 cmake_minimum_required(VERSION 3.16)
 
+include(${CMAKE_SOURCE_DIR}/cmake/CMakeHelpers.cmake)
+setup_conan()
+
 project(CryptoBrowser VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 
-set(CONAN_SYSTEM_INCLUDES ON)
-include(${CMAKE_SOURCE_DIR}/cmake/CMakeHelpers.cmake)
-setup_conan()
+find_package(cpprestsdk REQUIRED)
+list(APPEND CONAN_LIBS "cpprestsdk::cpprest")
+
+find_package(fmt REQUIRED)
+list(APPEND CONAN_LIBS "fmt::fmt")
+
+find_package(GTest REQUIRED)
+list(APPEND CONAN_LIBS "GTest::GTest")
+
+find_package(Boost REQUIRED)
+list(APPEND CONAN_LIBS "boost::boost")
+
+find_package(OpenSSL REQUIRED)
+list(APPEND CONAN_LIBS "OpenSSL::SSL")
+list(APPEND CONAN_LIBS "OpenSSL::Crypto")
+
 
 list(APPEND CMAKE_PREFIX_PATH "~/Qt/6.8.1/gcc_64")
 
 find_package(Qt6 REQUIRED COMPONENTS Quick)
+
 
 
 FILE(GLOB_RECURSE Resources_list RELATIVE ${CMAKE_SOURCE_DIR} "./assets/*")
@@ -19,8 +36,6 @@ FILE(GLOB_RECURSE Resources_list RELATIVE ${CMAKE_SOURCE_DIR} "./assets/*")
 MESSAGE("RESOURCES: ${Resources_list}")
 qt_add_executable(appCryptoBrowser
         main.cpp
-        CryptoLogoFetcher.cpp
-        CryptoLogoFetcher.hpp
         CryptoLogoFetcher.cpp
         CryptoLogoFetcher.hpp
 )

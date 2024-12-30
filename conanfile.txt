@@ -1,7 +1,13 @@
 [requires]
-gtest/1.14.0
-nlohmann_json/3.9.1
+gtest/1.15.0
+nlohmann_json/3.11.3
+boost/1.83.0
+openssl/3.3.2
 cpprestsdk/2.10.19
+fmt/11.0.2
 
 [generators]
-CMakeToolchain
+CMakeDeps
+
+[layout]
+cmake_layout

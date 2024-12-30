@@ -8,7 +8,7 @@ public:
     CryptoLogoFetcher(std::string source);
 
 
-    std::vector<char> fetch(const std::string& crypto_full_name, const std::string& crypto_symbol);
+    std::vector<unsigned char> fetch(const std::string& crypto_full_name, const std::string& crypto_symbol);
 
 private:
     std::string source;

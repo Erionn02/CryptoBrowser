@@ -60,21 +60,12 @@ function(set_link_options TARGET_NAME)
 endfunction()
 
 macro(setup_conan)
-    download_conan_cmake()
-    include(${CMAKE_BINARY_DIR}/conan/conan.cmake)
-    set(CONAN_SYSTEM_INCLUDES ON)
-    conan_cmake_run(
-            CONANFILE ${CMAKE_SOURCE_DIR}/conanfile.txt
-            PROFILE default
-            BASIC_SETUP
-            BUILD missing
-    )
-endmacro()
-
-function(download_conan_cmake)
     if (NOT EXISTS "${CMAKE_BINARY_DIR}/conan/conan.cmake")
         message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
-        file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/master/conan.cmake"
+        file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/refs/heads/develop2/conan_provider.cmake"
                 "${CMAKE_BINARY_DIR}/conan/conan.cmake")
     endif ()
-endfunction()
+    list(APPEND CMAKE_PROJECT_TOP_LEVEL_INCLUDES "${CMAKE_BINARY_DIR}/conan/conan.cmake")
+    list(APPEND CMAKE_PREFIX_PATH "${CMAKE_BINARY_DIR}/conan")
+    set(CONAN_SYSTEM_INCLUDES ON)
+endmacro()
