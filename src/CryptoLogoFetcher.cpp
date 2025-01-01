@@ -1,8 +1,6 @@
 #include "CryptoLogoFetcher.hpp"
 
-#define _TURN_OFF_PLATFORM_STRING
 #include <cpprest/http_client.h>
-
 #include <fmt/format.h>
 
 CryptoLogoFetcher::CryptoLogoFetcher(std::string source) : source(std::move(source)) {

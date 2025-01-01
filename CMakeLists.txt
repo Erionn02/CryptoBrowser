@@ -9,6 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 
 find_package(cpprestsdk REQUIRED)
+add_definitions(-D_TURN_OFF_PLATFORM_STRING)
 list(APPEND CONAN_LIBS "cpprestsdk::cpprest")
 
 find_package(fmt REQUIRED)
@@ -24,20 +25,25 @@ find_package(OpenSSL REQUIRED)
 list(APPEND CONAN_LIBS "OpenSSL::SSL")
 list(APPEND CONAN_LIBS "OpenSSL::Crypto")
 
+find_package(nlohmann_json REQUIRED)
+list(APPEND CONAN_LIBS "nlohmann_json::nlohmann_json")
+
 
 list(APPEND CMAKE_PREFIX_PATH "~/Qt/6.8.1/gcc_64")
 
 find_package(Qt6 REQUIRED COMPONENTS Quick)
 
-
+include_directories(include)
 
 FILE(GLOB_RECURSE Resources_list RELATIVE ${CMAKE_SOURCE_DIR} "./assets/*")
 
 MESSAGE("RESOURCES: ${Resources_list}")
 qt_add_executable(appCryptoBrowser
         main.cpp
-        CryptoLogoFetcher.cpp
-        CryptoLogoFetcher.hpp
+        src/CryptoLogoFetcher.cpp
+        include/CryptoLogoFetcher.hpp
+        src/CoinLoreDataFetcher.cpp
+        include/CoinLoreDataFetcher.hpp
 )
 
 qt_add_qml_module(appCryptoBrowser
