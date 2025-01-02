@@ -8,9 +8,9 @@ namespace web::http::client {
     class http_client;
 }
 
-class CryptoDataFetcher {
+class CoinLoreMetadataFetcher {
 public:
-    CryptoDataFetcher();
+    CoinLoreMetadataFetcher();
 
     std::vector<nlohmann::json> fetchTop100Cryptos();
     std::vector<nlohmann::json> fetchTopCryptos(std::size_t limit);

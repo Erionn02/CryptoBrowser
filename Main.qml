@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import com.company.QtCryptoController
 
 Window {
     width: 640
@@ -40,10 +41,63 @@ Window {
                 leftMargin: 10
             }
             text: "Search"
+            onClicked: {
+                QtCryptoController.fetchSome()
+            }
+        }
+    }
+
+    Rectangle {
+        id: mainSection
+        color: "red"
+        anchors {
+            top: searchSection.bottom
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
         }
 
+        ListView {
+            id: cryptoList
+            anchors.fill: parent
+            model: QtCryptoController
 
+            delegate: Rectangle {
+                id: delegate
 
+                width: cryptoList.width
+                height: 50
+
+                required property string cryptoName
+                required property string cryptoSymbol
+                required property double cryptoPrice
+                required property double cryptoMarketCap;
+                required property double cryptoChange24H;
+                required property string cryptoLogo;
+                Flow {
+                    anchors.fill: parent
+                    spacing: 10
+                    Image {
+                        source: "data:image/png;base64," + delegate.cryptoLogo
+                    }
+                    Text {
+                        text: delegate.cryptoName
+                    }
+                    Text {
+                        text: delegate.cryptoSymbol
+                    }
+                    Text {
+                        text: delegate.cryptoPrice
+                    }
+                    Text {
+                        text: delegate.cryptoMarketCap
+                    }
+                    Text {
+                        text: delegate.cryptoChange24H
+                    }
+                }
+            }
+        }
     }
 
 }

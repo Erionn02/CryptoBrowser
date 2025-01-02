@@ -5,7 +5,7 @@ setup_conan()
 
 project(CryptoBrowser VERSION 0.1 LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_AUTOMOC ON)
 
 find_package(cpprestsdk REQUIRED)
@@ -40,10 +40,14 @@ FILE(GLOB_RECURSE Resources_list RELATIVE ${CMAKE_SOURCE_DIR} "./assets/*")
 MESSAGE("RESOURCES: ${Resources_list}")
 qt_add_executable(appCryptoBrowser
         main.cpp
-        src/CryptoLogoFetcher.cpp
-        include/CryptoLogoFetcher.hpp
-        src/CoinLoreDataFetcher.cpp
-        include/CoinLoreDataFetcher.hpp
+        src/CoinLoreMetadataFetcher.cpp
+        include/CoinLoreMetadataFetcher.hpp
+        src/CoinLoreLogoFetcher.cpp
+        include/CoinLoreLogoFetcher.hpp
+        src/QtCryptoController.cpp
+        include/QtCryptoController.hpp
+        src/CoinLoreFetcher.cpp
+        include/CoinLoreFetcher.hpp
 )
 
 qt_add_qml_module(appCryptoBrowser

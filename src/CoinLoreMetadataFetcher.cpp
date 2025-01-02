@@ -1,17 +1,17 @@
-#include "CoinLoreDataFetcher.hpp"
+#include "CoinLoreMetadataFetcher.hpp"
 
 #include <cpprest/http_client.h>
 #include <fmt/format.h>
 
 
-CryptoDataFetcher::CryptoDataFetcher(): api_base_url("https://api.coinlore.net/api/") {
+CoinLoreMetadataFetcher::CoinLoreMetadataFetcher(): api_base_url("https://api.coinlore.net/api/") {
 }
 
-std::vector<nlohmann::json> CryptoDataFetcher::fetchTop100Cryptos() {
+std::vector<nlohmann::json> CoinLoreMetadataFetcher::fetchTop100Cryptos() {
     return fetchTopCryptos(100);
 }
 
-std::vector<nlohmann::json> CryptoDataFetcher::fetchTopCryptos(std::size_t limit) {
+std::vector<nlohmann::json> CoinLoreMetadataFetcher::fetchTopCryptos(std::size_t limit) {
     web::http::client::http_client_config config{};
     config.set_max_redirects(100000);
     web::http::client::http_client client(api_base_url, config);
@@ -36,7 +36,7 @@ std::vector<nlohmann::json> CryptoDataFetcher::fetchTopCryptos(std::size_t limit
     return result;
 }
 
-nlohmann::json CryptoDataFetcher::sendRequest(web::http::client::http_client& client, std::size_t start, std::size_t limit) {
+nlohmann::json CoinLoreMetadataFetcher::sendRequest(web::http::client::http_client& client, std::size_t start, std::size_t limit) {
     web::http::http_request request{web::http::methods::GET};
     request.set_request_uri(fmt::format("tickers/?start={}&limit={}", start, limit));
     auto response = client.request(request).get();
