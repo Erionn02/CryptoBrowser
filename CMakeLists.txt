@@ -31,7 +31,7 @@ list(APPEND CONAN_LIBS "nlohmann_json::nlohmann_json")
 
 list(APPEND CMAKE_PREFIX_PATH "~/Qt/6.8.1/gcc_64")
 
-find_package(Qt6 REQUIRED COMPONENTS Quick)
+find_package(Qt6 REQUIRED COMPONENTS Quick Charts)
 
 include_directories(include)
 
@@ -55,8 +55,9 @@ qt_add_qml_module(appCryptoBrowser
         VERSION 1.0
         QML_FILES
         Main.qml
-        #    RESOURCES
-        #        ${Resources_list}
+        CryptoItem.qml
+        RESOURCES
+        ${Resources_list}
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -73,6 +74,7 @@ set_target_properties(appCryptoBrowser PROPERTIES
 target_link_libraries(appCryptoBrowser
         PRIVATE
         Qt6::Quick
+        Qt6::Charts
         ${CONAN_LIBS}
 )
 

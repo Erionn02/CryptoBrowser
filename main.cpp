@@ -1,5 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QWindow>
+#include <QScreen>
 
 #include <fstream>
 #include <iostream>
@@ -12,8 +14,17 @@
 #include "QtCryptoController.hpp"
 
 
-int main(int argc, char *argv[])
-{
+void setOnScreenCenter(QQmlApplicationEngine& engine) {
+    if (!engine.rootObjects().isEmpty()) {
+        QWindow *window = qobject_cast<QWindow *>(engine.rootObjects().first());
+        if (window) {
+            window->setX(QGuiApplication::primaryScreen()->geometry().x() + (QGuiApplication::primaryScreen()->geometry().width() - window->width()) / 2);
+            window->setY(QGuiApplication::primaryScreen()->geometry().y() + (QGuiApplication::primaryScreen()->geometry().height() - window->height()) / 2);
+        }
+    }
+}
+
+int main(int argc, char *argv[]) {
     QGuiApplication app(argc, argv);
 
     QtCryptoController controller{};
@@ -27,12 +38,7 @@ int main(int argc, char *argv[])
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
     engine.loadFromModule("CryptoBrowser", "Main");
-
-    CoinLoreMetadataFetcher data_fetcher{};
-    std::filesystem::create_directories("/tmp/logos");
-
-
-
+    setOnScreenCenter(engine);
 
     return app.exec();
 }
