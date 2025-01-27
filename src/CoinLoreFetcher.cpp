@@ -1,6 +1,8 @@
 #include "CoinLoreFetcher.hpp"
 
-std::vector<CryptoData> CoinLoreFetcher::fetchTopCryptos(std::size_t limit) {
+
+
+std::vector<CryptoData> CoinLoreFetcher::fetchTopCryptos(std::size_t limit, const std::string& interval) {
     auto cryptos = data_fetcher.fetchTopCryptos(limit);
     std::vector<std::string> crypto_ids{};
     for (const auto& crypto : cryptos) {
@@ -18,9 +20,11 @@ std::vector<CryptoData> CoinLoreFetcher::fetchTopCryptos(std::size_t limit) {
         data.price = std::stod(crypto_data["price_usd"].get<std::string>());
         data.market_cap = std::stod(crypto_data["market_cap_usd"].get<std::string>());
         data.change_24h = std::stod(crypto_data["percent_change_24h"].get<std::string>());
+        data.chart_data = chart_data_fetcher.fetch(data.symbol, interval);
         if (logos.contains(crypto_data["nameid"].get<std::string>())) {
             data.logo = logos.at(crypto_data["nameid"].get<std::string>());
         }
+        data.interval = interval;
         result.push_back(data);
     }
 
@@ -28,5 +32,5 @@ std::vector<CryptoData> CoinLoreFetcher::fetchTopCryptos(std::size_t limit) {
 }
 
 std::vector<CryptoData> CoinLoreFetcher::fetchTop10() {
-    return fetchTopCryptos(10);
+    return fetchTopCryptos(10, "1d");
 }

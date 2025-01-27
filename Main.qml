@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import com.company.QtCryptoController
+import QtCharts
 
 ApplicationWindow {
     width: 1024
@@ -8,77 +9,115 @@ ApplicationWindow {
     visible: true
     title: qsTr("CryptoBrowser")
 
-    property var watchlist: []
-
     Rectangle {
         id: header
         color: "#2c3e50"
-        height: 60
+        height: 80
         width: parent.width
         anchors.top: parent.top
 
         Text {
+            id: title
             text: "CryptoBrowser"
             color: "white"
-            font.pixelSize: 24
+            font.pixelSize: 28 // Slightly larger font
+            font.bold: true
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
-            anchors.leftMargin: 20
+            anchors.leftMargin: 30
         }
 
-        TextField {
-            id: searchField
+        Row {
+            id: fetchSection
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: title.right
+            anchors.leftMargin: 30
+            spacing: 10
+
+            TextField {
+                id: fetchField
+                width: 200
+                placeholderText: "Number of cryptos to fetch..."
+                text: "10"
+                font.pixelSize: 16
+                padding: 12
+                background: Rectangle {
+                    color: "white"
+                    radius: 8
+                    border.color: "#3498db"
+                    border.width: 1
+                }
+            }
+
+            Button {
+                id: fetchButton
+                text: "Fetch"
+                font.pixelSize: 16
+                padding: 12
+                background: Rectangle {
+                    color: "#3498db"
+                    radius: 8
+                }
+                contentItem: Text {
+                    text: fetchButton.text
+                    font: fetchButton.font
+                    color: "white"
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+                onClicked: {
+                    QtCryptoController.fetchTopCryptos(fetchField.text, "1d")
+                }
+            }
+        }
+
+        Row {
+            id: searchSection
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
-            anchors.rightMargin: 20
-            width: 300
-            placeholderText: "Search"
-            font.pixelSize: 16
-            padding: 10
-            background: Rectangle {
-                color: "white"
-                radius: 10
-            }
-        }
+            anchors.rightMargin: 30
+            spacing: 10
 
-        Button {
-            id: searchButton
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.right: searchField.left
-            anchors.rightMargin: 10
-            text: "Search"
-            font.pixelSize: 16
-            padding: 10
-            background: Rectangle {
-                color: "#3498db"
-                radius: 10
+            TextField {
+                id: searchField
+                width: 300
+                placeholderText: "Search for a crypto..."
+                font.pixelSize: 16
+                padding: 12
+                background: Rectangle {
+                    color: "white"
+                    radius: 8
+                    border.color: "#3498db"
+                    border.width: 1
+                }
             }
-            onClicked: {
-                QtCryptoController.fetchSome()
-            }
-        }
 
-        Button {
-            id: watchlistButton
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.right: searchButton.left
-            anchors.rightMargin: 10
-            text: "Watchlist"
-            font.pixelSize: 16
-            padding: 10
-            background: Rectangle {
-                color: "#e74c3c"
-                radius: 10
-            }
-            onClicked: {
-                watchlistView.visible = !watchlistView.visible
+            Button {
+                id: searchButton
+                text: "Search"
+                font.pixelSize: 16
+                padding: 12
+                background: Rectangle {
+                    color: "#3498db"
+                    radius: 8
+                }
+                contentItem: Text {
+                    text: searchButton.text
+                    font: searchButton.font
+                    color: "white"
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+                onClicked: {
+                    QtCryptoController.search(searchField.text)
+                }
             }
         }
     }
 
     Rectangle {
         id: mainSection
-        color: "#ecf0f1"
+        color: "#f5f6fa"
         anchors.top: header.bottom
         anchors.bottom: parent.bottom
         anchors.left: parent.left
@@ -97,16 +136,15 @@ ApplicationWindow {
                 id: scrollBar
                 visible: false
                 policy: ScrollBar.AlwaysOn
-                width: 20
+                width: 10
                 background: Rectangle {
                     color: "lightgrey"
-                    radius: 5
                 }
                 contentItem: Rectangle {
-                    implicitWidth: 20
-                    implicitHeight: 20
+                    implicitWidth: 10
+                    implicitHeight: 50
                     radius: 5
-                    color: "grey"
+                    color: "#3498db"
                 }
             }
             onCountChanged: scrollBar.visible = count > 0

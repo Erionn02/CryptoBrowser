@@ -28,10 +28,13 @@ list(APPEND CONAN_LIBS "OpenSSL::Crypto")
 find_package(nlohmann_json REQUIRED)
 list(APPEND CONAN_LIBS "nlohmann_json::nlohmann_json")
 
+find_package(spdlog REQUIRED)
+list(APPEND CONAN_LIBS "spdlog::spdlog")
+
 
 list(APPEND CMAKE_PREFIX_PATH "~/Qt/6.8.1/gcc_64")
 
-find_package(Qt6 REQUIRED COMPONENTS Quick Charts)
+find_package(Qt6 REQUIRED COMPONENTS Quick Charts Core5Compat)
 
 include_directories(include)
 
@@ -48,6 +51,8 @@ qt_add_executable(appCryptoBrowser
         include/QtCryptoController.hpp
         src/CoinLoreFetcher.cpp
         include/CoinLoreFetcher.hpp
+        include/CryptoChartDataFetcher.hpp
+        src/CryptoChartDataFetcher.cpp
 )
 
 qt_add_qml_module(appCryptoBrowser
@@ -75,6 +80,7 @@ target_link_libraries(appCryptoBrowser
         PRIVATE
         Qt6::Quick
         Qt6::Charts
+        Qt6::Core5Compat
         ${CONAN_LIBS}
 )
 

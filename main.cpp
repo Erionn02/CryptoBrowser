@@ -1,4 +1,5 @@
 #include <QGuiApplication>
+#include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QWindow>
 #include <QScreen>
@@ -9,8 +10,6 @@
 #include <cpprest/http_client.h>
 #include <fmt/format.h>
 
-#include "CoinLoreMetadataFetcher.hpp"
-#include "CoinLoreLogoFetcher.hpp"
 #include "QtCryptoController.hpp"
 
 
@@ -25,7 +24,7 @@ void setOnScreenCenter(QQmlApplicationEngine& engine) {
 }
 
 int main(int argc, char *argv[]) {
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
 
     QtCryptoController controller{};
     qmlRegisterSingletonInstance("com.company.QtCryptoController", 1, 0, "QtCryptoController", &controller);

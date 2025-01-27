@@ -5,6 +5,7 @@ boost/1.83.0
 openssl/3.3.2
 cpprestsdk/2.10.19
 fmt/11.0.2
+spdlog/1.15.0
 
 [generators]
 CMakeDeps
