@@ -55,7 +55,7 @@ std::unordered_map<std::string, ChartData> CryptoChartDataFetcher::fetch(const s
             result[symbol] = cache.at({symbol, interval});
         } else {
             web::http::http_request request{web::http::methods::GET};
-            request.set_request_uri(fmt::format("/api/v3/klines?symbol={}USDT&interval={}&limit=30", "symbol", interval));
+            request.set_request_uri(fmt::format("/api/v3/klines?symbol={}USDT&interval={}&limit=30", symbol, interval));
             responses.emplace_back(symbol, client.request(request));
         }
     }
@@ -69,8 +69,8 @@ std::unordered_map<std::string, ChartData> CryptoChartDataFetcher::fetch(const s
             for (auto&[_, el] : items_array.items()) {
                 chart_data.push_back({el[0].get<std::uint64_t>(), std::stod(el[1].get<std::string>())});
             }
+            cache[{symbol, interval}] = chart_data;
         }
-        cache[{symbol, interval}] = chart_data;
         result[symbol] = chart_data;
     }
 
