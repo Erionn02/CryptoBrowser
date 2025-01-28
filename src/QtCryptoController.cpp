@@ -99,7 +99,7 @@ void QtCryptoController::search(const QString &query) {
 
     QList<CryptoData> result{};
     for (auto &crypto: cryptos) {
-        if (std::ranges::any_of(symbols, [&crypto](const auto & symbol) { return crypto.symbol.starts_with(symbol);})) {
+        if (std::ranges::any_of(symbols, [&crypto](const auto & symbol) { return crypto.symbol.starts_with(symbol) || crypto.name.starts_with(symbol);})) {
             result.append(std::move(crypto));
         }
     }
