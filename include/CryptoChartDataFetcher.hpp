@@ -28,10 +28,10 @@ struct PairHash {
 
 class CryptoChartDataFetcher {
 public:
-    CryptoChartDataFetcher(std::string cache_file = "/home/kuba/chart_data_cache.json");
+    CryptoChartDataFetcher(std::string cache_file = "/tmp/chart_data_cache.json");
     ~CryptoChartDataFetcher();
     ChartData fetch(const std::string& symbol, const std::string& interval = "1d", bool use_cache = true);
-
+    std::unordered_map<std::string, ChartData> fetch(const std::vector<std::string>& symbols, const std::string& interval = "1d", bool use_cache = true);
 private:
     ChartData fetchFromNetwork(const std::string &symbol, const std::string& time_frame);
 
